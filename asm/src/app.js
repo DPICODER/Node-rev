@@ -10,6 +10,7 @@ const User = require("./models/User");
 const authRouter = require("./routes/authRoutes");
 const protect = require("./middlewares/authMiddleware");
 const testRouter = require("./routes/testRoutes");
+const assetRouter = require("./routes/assetRoutes");
 const app = express();
 const PORT = process.env.PORT;
 
@@ -17,11 +18,12 @@ app.use(express.json())
 app.use(loggerMiddleware);
 
 app.get("/", (req, res) => {
-    res.send("Dayumm you didn't forget NODE js");
+  res.send("Dayumm you didn't forget NODE js");
 });
 
-app.use('/api/auth',authRouter);
-app.use('/api/test',testRouter)
+app.use('/api/auth', authRouter);
+app.use('/api/test', testRouter);
+app.use('/api/asset',assetRouter);
 
 // async function that establishes test connection to the database (Mariadb)
 async function initailizeDB() {

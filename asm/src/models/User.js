@@ -54,6 +54,17 @@ const User = sequelize.define('User',{
             const saltRounds = 10;
             user.password = await bcrypt.hash(user.password , saltRounds);
         },
+        beforeSave:async(user)=>{
+            if(user.changed('password')){
+                const saltRounds = 10;
+                user.password = await bcrypt.hash(user.password , saltRounds);
+            }
+        },
+        beforeValidate:(user)=>{
+            if(user.email){
+                user.email = user.email.toLowerCase();
+            }
+        }
     },
 })
 

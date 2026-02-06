@@ -31,12 +31,12 @@
 
 ## Phase 2 — Asset CRUD System
 
-* [ ] Create Asset model/schema
-* [ ] Implement create asset endpoint
-* [ ] Implement get all assets endpoint
-* [ ] Implement get asset by ID endpoint
-* [ ] Implement update asset endpoint
-* [ ] Implement delete asset endpoint
+* [X] Create Asset model/schema
+* [X] Implement create asset endpoint
+* [X] Implement get all assets endpoint
+* [X] Implement get asset by ID endpoint
+* [X] Implement update asset endpoint
+* [X] Implement delete asset endpoint
 * [ ] Restrict create/delete to admin role
 * [ ] Add input validation
 * [ ] Add pagination support
