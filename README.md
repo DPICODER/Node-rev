@@ -32,29 +32,38 @@ This project emphasizes **understanding architecture**, not just making things w
 ### Sequelize Model Design
 
 * Proper schema design
-* Default scopes for hiding sensitive fields
-* Model hooks for automatic password hashing
-* Instance methods (e.g., password comparison)
+* Model associations (User ↔ Asset relationships)
+* Scoped queries for ownership enforcement
+* Instance-level CRUD operations
 
-### Authentication Foundations
+### Authentication System
 
-* Register & login flow design
+* User registration & login flow
 * Secure password hashing with bcrypt
-* Scoped database queries
-* Controller/route separation
+* JWT-based authentication
+* Protected routes using auth middleware
+* `/auth/me` endpoint for session validation
+
+### Asset CRUD Architecture
+
+* Full Asset CRUD implementation
+* Ownership-based access control
+* Controller-driven API design
+* Consistent REST response structure
+* Soft delete awareness
 
 ### Middleware System
 
-* Request logging middleware
-* Error middleware pipeline
+* Authentication middleware
+* Validation middleware pipeline
+* Error middleware architecture
 * Clean middleware ordering
-* Express architecture fundamentals
 
 ### Code Structure Improvements
 
 * Separation of concerns (routes → controllers → models)
+* Modular controller architecture
 * Simplified readable logic
-* Avoiding cluttered monolithic files
 * Professional folder architecture
 
 ---
@@ -64,9 +73,10 @@ This project emphasizes **understanding architecture**, not just making things w
 ```
 src/
 ├── controllers/     # Business logic
-├── models/          # Database schemas & hooks
+├── models/          # Database schemas & associations
 ├── routes/          # API endpoints
-├── middlewares/     # Logging & error handling
+├── middlewares/     # Auth, validation & error handling
+├── validators/      # Joi validation schemas
 ├── config/          # Database configuration
 └── app.js           # Server entry point
 ```
@@ -83,13 +93,32 @@ src/
 * Request logging middleware
 * Clean folder architecture
 
-### Phase 1 — Authentication (In Progress)
+### Phase 1 — Authentication System ✅
 
-* User model
+* User model & schema
 * Password hashing hooks
 * Register endpoint
 * Login endpoint
-* JWT authentication (coming next)
+* JWT authentication
+* Route protection middleware
+* `/auth/me` endpoint
+
+### Phase 2 — Asset CRUD System (Core Complete)
+
+* Asset model & associations
+* Create asset endpoint
+* List user assets endpoint
+* Get asset by ID endpoint
+* Update asset endpoint
+* Delete asset endpoint
+* Ownership enforcement on all operations
+
+**Remaining Phase 2 Enhancements:**
+
+* Role-based admin restrictions
+* Pagination support
+* Filtering & sorting
+* Validation hardening
 
 ---
 
@@ -100,6 +129,8 @@ src/
 * Sequelize ORM
 * MariaDB
 * bcrypt
+* JWT
+* Joi
 * dotenv
 
 ---
@@ -119,12 +150,11 @@ Each phase focuses on mastering one layer of backend engineering before moving f
 
 ## 🔜 Next Steps
 
-* JWT authentication
-* Route protection middleware
+* Pagination & filtering system
 * Role-based authorization
-* Input validation
+* Advanced validation patterns
 * Automated testing
-* Production-ready patterns
+* Production-ready API patterns
 
 ---
 
@@ -135,6 +165,6 @@ This repo is intentionally documented to track learning progress and reinforce b
 ---
 
 ## ⚡ Author
+
 SAIVARUN aka DPICODER
 Backend revision & experimentation lab focused on mastering Node.js architecture.
-
