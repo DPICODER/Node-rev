@@ -23,9 +23,9 @@
 * [X] Generate JWT tokens
 * [X] Create auth middleware (protect routes)
 * [X] Create /auth/me endpoint
-* [ ] Add role-based authorization middleware
-* [ ] Validate inputs using Joi/Zod
-* [ ] Test auth endpoints with Postman
+* [X] Add role-based authorization middleware
+* [X] Validate inputs using Joi/Zod
+* [X] Test auth endpoints with Postman
 
 ---
 

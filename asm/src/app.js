@@ -9,6 +9,7 @@ const loggerMiddleware = require("./middlewares/loggerMiddleware");
 const User = require("./models/User");
 const authRouter = require("./routes/authRoutes");
 const protect = require("./middlewares/authMiddleware");
+const testRouter = require("./routes/testRoutes");
 const app = express();
 const PORT = process.env.PORT;
 
@@ -20,41 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/auth',authRouter);
-
-// Test Route for checking user creation
-// app.get('/create-test-user',async(req,res,next)=>{
-//     try {
-//         const user = await User.create({
-//             email:'varun@gmail.com',
-//             firstName:'SaiVarun',
-//             lastName:'Pannala',
-//             password:'stronkPassword123'
-//         })
-//         const {password,...safeUser} = user.toJSON();
-//         res.json(safeUser);
-//     } catch (error) {
-//         next(err);
-//     }
-// })
-
-
-// Test Route Error middleware test error 
-/* app.get("/test-error", (req, res, next) => {
-   next(new Error("This is a test error"));
- });*/
-
-// Test Route to check Authorization / JWT
-/* */
-app.get('/me',protect,(req,res)=>{
-  res.json({
-    id:req.user.id,
-    email:req.user.email,
-    role:req.user.role
-  });
-});
-
-
-
+app.use('/api/test',testRouter)
 
 // async function that establishes test connection to the database (Mariadb)
 async function initailizeDB() {
