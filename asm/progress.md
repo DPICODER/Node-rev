@@ -8,9 +8,9 @@
 * [X] Create folder architecture
 * [X] Setup Express server entry point
 * [X] Setup environment variables (.env)
-* [X] Connect database successfully
-* [X] Create base error handler middleware
-* [X] Add request logging middleware
+* [X] Connect database successfully => sequelize auth connect
+* [X] Create base error handler middleware => handles every single error thrown as throw new Error("error message")
+* [X] Add request logging middleware => logs every requrest type URL and time took to respond
 
 ---
 
@@ -20,9 +20,9 @@
 * [X] Implement password hashing
 * [X] Create register endpoint
 * [X] Create login endpoint
-* [ ] Generate JWT tokens
-* [ ] Create auth middleware (protect routes)
-* [ ] Create /auth/me endpoint
+* [X] Generate JWT tokens
+* [X] Create auth middleware (protect routes)
+* [X] Create /auth/me endpoint
 * [ ] Add role-based authorization middleware
 * [ ] Validate inputs using Joi/Zod
 * [ ] Test auth endpoints with Postman

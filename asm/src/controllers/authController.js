@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const generateToken = require("../utils/generateToken");
 
 exports.register = async (req, res, next) => {
   try {
@@ -56,8 +57,19 @@ exports.login = async (req, res, next) => {
       throw error;
     }
 
+    const token = generateToken(user);
+
+    res.status(200).json({
+      token,
+      user:{
+        id:user.id,
+        email:user.email,
+        role:user.role
+      }
+    });
+
     // console.log("Fetched User form DB :",user);
-    res.status(200).json({ success: true, message: "login Success" });
+    // res.status(200).json({ success: true, message: "login Success" });
   } catch (error) {
     next(error);
   }

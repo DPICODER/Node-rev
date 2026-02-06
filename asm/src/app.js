@@ -8,6 +8,7 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const loggerMiddleware = require("./middlewares/loggerMiddleware");
 const User = require("./models/User");
 const authRouter = require("./routes/authRoutes");
+const protect = require("./middlewares/authMiddleware");
 const app = express();
 const PORT = process.env.PORT;
 
@@ -41,6 +42,18 @@ app.use('/api/auth',authRouter);
 /* app.get("/test-error", (req, res, next) => {
    next(new Error("This is a test error"));
  });*/
+
+// Test Route to check Authorization / JWT
+/* */
+app.get('/me',protect,(req,res)=>{
+  res.json({
+    id:req.user.id,
+    email:req.user.email,
+    role:req.user.role
+  });
+});
+
+
 
 
 // async function that establishes test connection to the database (Mariadb)
