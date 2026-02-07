@@ -33,13 +33,13 @@ This project emphasizes **understanding architecture**, not just making things w
 
 * Proper schema design
 * Model associations (User ↔ Asset relationships)
-* Scoped queries for ownership enforcement
+* Scoped queries and relational integrity
 * Instance-level CRUD operations
 
 ### Authentication System
 
 * User registration & login flow
-* Secure password hashing with bcrypt
+* Secure password hashing with bcrypt hooks
 * JWT-based authentication
 * Protected routes using auth middleware
 * `/auth/me` endpoint for session validation
@@ -47,17 +47,27 @@ This project emphasizes **understanding architecture**, not just making things w
 ### Asset CRUD Architecture
 
 * Full Asset CRUD implementation
-* Ownership-based access control
-* Controller-driven API design
-* Consistent REST response structure
-* Soft delete awareness
+* Role-based admin authorization
+* Joi schema validation pipeline
+* Pagination engine with metadata responses
+* Filtering by category/status
+* Sorting with safe field whitelisting
+* Controller-driven REST design
 
 ### Middleware System
 
 * Authentication middleware
-* Validation middleware pipeline
-* Error middleware architecture
+* Role-based authorization middleware
+* Joi validation middleware pipeline
+* Centralized error middleware
 * Clean middleware ordering
+
+### API Query Engine
+
+* Pagination using limit/offset
+* Dynamic filtering system
+* Safe sorting architecture
+* Scalable query composition
 
 ### Code Structure Improvements
 
@@ -103,22 +113,26 @@ src/
 * Route protection middleware
 * `/auth/me` endpoint
 
-### Phase 2 — Asset CRUD System (Core Complete)
+### Phase 2 — Asset CRUD System ✅
 
 * Asset model & associations
 * Create asset endpoint
-* List user assets endpoint
+* Get all assets endpoint
 * Get asset by ID endpoint
 * Update asset endpoint
 * Delete asset endpoint
-* Ownership enforcement on all operations
-
-**Remaining Phase 2 Enhancements:**
-
-* Role-based admin restrictions
+* Admin-only create/delete enforcement
+* Joi input validation
 * Pagination support
-* Filtering & sorting
-* Validation hardening
+* Filtering (category/status)
+* Sorting options
+
+### Phase 3 — Allocation System (Starting Next)
+
+* Allocation model/schema
+* Asset assignment endpoint
+* Allocation history tracking
+* Business rule enforcement
 
 ---
 
@@ -150,9 +164,9 @@ Each phase focuses on mastering one layer of backend engineering before moving f
 
 ## 🔜 Next Steps
 
-* Pagination & filtering system
-* Role-based authorization
-* Advanced validation patterns
+* Allocation system design
+* Relational domain modeling
+* Advanced business logic enforcement
 * Automated testing
 * Production-ready API patterns
 
