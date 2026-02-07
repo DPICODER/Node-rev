@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
-
+const bcrypt = require('bcrypt');
 exports.register = async (req, res, next) => {
   try {
     const { email, firstName, userName, lastName, password } = req.body;
@@ -40,6 +40,8 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { userName, password } = req.body;
+    console.log("req.body",req.body);
+    
     const user = await User.scope("withPassword").findOne({
       where: { userName },
     });
@@ -48,7 +50,9 @@ exports.login = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
-
+    const compare =await bcrypt.compare(password,user.password);
+    console.log("Compare Status:",compare);
+    
     const isMatch = await user.comparePassword(password);
     // console.log("is same :",comparePassword);
     if (!isMatch) {

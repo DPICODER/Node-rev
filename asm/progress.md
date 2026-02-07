@@ -37,11 +37,11 @@
 * [X] Implement get asset by ID endpoint
 * [X] Implement update asset endpoint
 * [X] Implement delete asset endpoint
-* [ ] Restrict create/delete to admin role
-* [ ] Add input validation
-* [ ] Add pagination support
-* [ ] Add filtering (category/status)
-* [ ] Add sorting options
+* [X] Restrict create/delete to admin role
+* [X] Add input validation -> Used joi validator
+* [X] Add pagination support
+* [X] Add filtering (category/status)
+* [X] Add sorting options
 
 ---
 

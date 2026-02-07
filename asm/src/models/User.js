@@ -50,10 +50,6 @@ const User = sequelize.define('User',{
 
     //hooks to automatically hash password on user creation removing the need of creating hash code on register route
     hooks:{
-        beforeCreate:async(user)=>{
-            const saltRounds = 10;
-            user.password = await bcrypt.hash(user.password , saltRounds);
-        },
         beforeSave:async(user)=>{
             if(user.changed('password')){
                 const saltRounds = 10;
