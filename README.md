@@ -32,7 +32,7 @@ This project emphasizes **understanding architecture**, not just making things w
 ### Sequelize Model Design
 
 * Proper schema design
-* Model associations (User ↔ Asset relationships)
+* Model associations (User ↔ Asset ↔ Allocation relationships)
 * Scoped queries and relational integrity
 * Instance-level CRUD operations
 
@@ -54,11 +54,23 @@ This project emphasizes **understanding architecture**, not just making things w
 * Sorting with safe field whitelisting
 * Controller-driven REST design
 
+### Allocation System Architecture
+
+* Transaction-safe asset assignment
+* Row-level locking to prevent race conditions
+* Asset lifecycle state management
+* Allocation history tracking
+* Relational joins with eager loading
+* Input validation middleware
+* Business rule enforcement (availability checks)
+* Atomic multi-table updates
+
 ### Middleware System
 
 * Authentication middleware
 * Role-based authorization middleware
 * Joi validation middleware pipeline
+* Allocation validation middleware
 * Centralized error middleware
 * Clean middleware ordering
 
@@ -68,6 +80,7 @@ This project emphasizes **understanding architecture**, not just making things w
 * Dynamic filtering system
 * Safe sorting architecture
 * Scalable query composition
+* Joined relational queries
 
 ### Code Structure Improvements
 
@@ -127,12 +140,17 @@ src/
 * Filtering (category/status)
 * Sorting options
 
-### Phase 3 — Allocation System (Starting Next)
+### Phase 3 — Allocation System ✅
 
 * Allocation model/schema
-* Asset assignment endpoint
+* Transaction-safe assign asset endpoint
+* Prevent assigning unavailable assets
+* Return asset endpoint
+* Automatic asset status updates
 * Allocation history tracking
-* Business rule enforcement
+* Allocation listing endpoint with joins
+* Allocation input validation middleware
+* Concurrency-safe business logic
 
 ---
 
@@ -162,12 +180,12 @@ Each phase focuses on mastering one layer of backend engineering before moving f
 
 ---
 
-## 🔜 Next Steps
+## 🔜 Next Steps (Phase 4 Preview)
 
-* Allocation system design
-* Relational domain modeling
-* Advanced business logic enforcement
-* Automated testing
+* Advanced relational patterns
+* Automated testing with Jest
+* Service-layer architecture
+* Performance optimizations
 * Production-ready API patterns
 
 ---
