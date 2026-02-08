@@ -1,4 +1,7 @@
-const { Asset } = require("../models");
+const { where, ValidationErrorItemType } = require("sequelize");
+const sequelize = require("../config/database");
+const { Asset, Allocation, User } = require("../models");
+const { lock, all } = require("../routes/assetRoutes");
 
 
 exports.createAsset = async (req, res, next) => {
@@ -144,6 +147,143 @@ exports.updateAsset = async (req, res, next) => {
     }
 }
 
+exports.assignAsset = async(req , res , next)=>{
+    /**Flow
+     * create a transaction as we are working with multiple tables reads/updates/creations
+     * check if asset exist's for given asset id
+     * check if asset is available [imp : to avoid race condition lock the current record]
+     * check if user exist's whom to be allocated
+     * create a allocation record
+     * update the asset record [status:'allocated']
+     * commit the transcation
+     */
+    const t = await sequelize.transaction();
+    try {
+        const {id} = req.params;
+        const {userId} = req.body;
+        console.log("ID :",id);
+
+        
+        // validate asset exits -> and lock to avoid RACE Conditions
+        const asset = await Asset.findOne({where:{id:id},transaction:t,lock:t.LOCK.UPDATE},);
+
+        // fallback if no asset found
+        if(!asset){
+            const error = new Error("Asset not found!!");
+            error.statusCode=404;//not found
+            throw error;
+        }
+
+        if(asset.status !== "available"){
+            const error = new Error("Asset was already allocated to another user!!!");
+            error.statusCode=409; //conflict
+            throw error;
+        }
+        //validate user exits
+        const user = await User.findOne({where:{id:userId},transaction:t});
+        
+        if(!user){
+            const error = new Error("User not found!!");
+            error.statusCode=404;//not found
+            throw error;
+        }
+
+
+        const allocation = await Allocation.create({
+            assetId:id,
+            userId,
+        },{transaction:t})
+
+        await asset.update({status:'allocated'},{transaction:t});
+
+        await t.commit();
+
+        res.status(201).json(
+        {
+            success:true,
+            message:"Asset Assigned and updated Successfully",
+            data: allocation
+        }
+        )
+
+    } catch (error) {
+        await t.rollback();
+        return next(error); 
+    }
+}
+
+exports.returnAsset = async(req,res,next)=>{
+    const t = await sequelize.transaction();
+    try {
+        
+        const {id} = req.params;
+
+        const asset = await Asset.findOne({where:{id},transaction:t,lock:t.LOCK.UPDATE});
+
+        if(!asset){
+            const error = new Error("Asset not found");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        if(asset.status !== "allocated"){
+            const error = new Error("Asset is not yet Allocated !!!")
+            error.statusCode = 409;
+            throw error;
+        }
+
+        const allocation = await Allocation.findOne({where:{assetId:id,status:'active'},transaction:t,lock:t.LOCK.UPDATE});
+
+        if(!allocation){
+            const error = new Error("Allocation record not found!!");
+            error.statusCode=404;
+            throw error;
+        }
+        await allocation.update({status:'returned',returnedAt: new Date()},{transaction:t});
+
+        await asset.update({status:'available'},{transaction:t})
+
+
+        await t.commit();
+
+        res.status(200).json({
+            success:true,
+            message:"Asset returned successfully",
+        })
+
+    } catch (error) {
+        await t.rollback();
+        next(error)
+    }
+}
+
+exports.allocationsList = async(req,res,next)=>{
+    try {
+        const allocations = await Allocation.findAll({
+            include:[
+                {
+                    model:Asset.unscoped(),
+                    as:'asset',
+                    attributes:['id','assetTag','name','status'],
+                },
+                {
+                    model:User,
+                    as:'user',
+                    attributes:['id','userName','email'],
+                },
+            ],order:[['assignedAt','DESC']]
+        });
+
+        res.status(200).json({
+            success:true,
+            count:allocations.length,
+            data:allocations
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 exports.deleteAsset = async (req, res, next) => {
     try {

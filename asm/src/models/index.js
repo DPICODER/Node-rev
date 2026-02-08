@@ -1,14 +1,25 @@
+const Allocation = require("./allocation.model");
 const Asset = require("./asset.model");
 const User = require("./User");
 
-User.hasMany(Asset,{
-    foreignKey:'createdBy',
-    as:'assets',
-})
+Asset.hasMany(Allocation, {
+  foreignKey: "assetId",
+  as: "allocations",
+});
 
-Asset.belongsTo(User,{
-    foreignKey:'createdBy',
-    as:'creator',
-})
+Allocation.belongsTo(Asset, {
+  foreignKey: "assetId",
+  as: "asset",
+});
 
-module.exports ={User,Asset}
+User.hasMany(Allocation, {
+  foreignKey: "userId",
+  as: "allocations",
+});
+
+Allocation.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+module.exports = { User, Asset, Allocation };

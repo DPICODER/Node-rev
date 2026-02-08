@@ -47,14 +47,14 @@
 
 ## Phase 3 — Allocation System
 
-* [ ] Create Allocation model/schema
-* [ ] Create assign asset endpoint
-* [ ] Prevent assigning unavailable assets
-* [ ] Create return asset endpoint
-* [ ] Update asset status automatically
-* [ ] Track allocation history
-* [ ] Create endpoint to list allocations
-* [ ] Validate all allocation inputs
+* [X] Create Allocation model/schema
+* [X] Create assign asset endpoint
+* [X] Prevent assigning unavailable assets
+* [X] Create return asset endpoint
+* [X] Update asset status automatically
+* [X] Track allocation history
+* [X] Create endpoint to list allocations
+* [X] Validate all allocation inputs
 
 ---
 
