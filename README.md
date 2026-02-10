@@ -2,7 +2,7 @@
 
 A personal backend engineering lab focused on revising Node.js fundamentals and learning production-style backend architecture step by step.
 
-This repository is not a single app — it is a **structured learning workspace** where each phase builds real backend skills through hands-on implementation.
+This repository is not a single app — it is a **structured backend learning workspace** where each phase builds real engineering skills through hands-on implementation.
 
 ---
 
@@ -13,21 +13,26 @@ The goal of this repo is to:
 * Revisit backend fundamentals with Node.js & Express
 * Learn real-world backend architecture patterns
 * Build clean, maintainable API structure
-* Practice security best practices
-* Replace cluttered beginner code with simplified, scalable patterns
+* Practice production-grade security techniques
+* Replace cluttered beginner code with scalable design patterns
 
-This project emphasizes **understanding architecture**, not just making things work.
+This project emphasizes **architecture and engineering discipline**, not just making things work.
 
 ---
 
 ## 🧠 Key Concepts Learned So Far
 
-### Error Handling Architecture
+### Error & Security Architecture
 
-* Centralized error middleware
-* Throwing structured errors with status codes
-* Clean error propagation using `next(error)`
-* Consistent API error responses
+* Centralized global error handling middleware
+* Custom structured error classes (AppError pattern)
+* Async error propagation without try/catch clutter
+* Consistent API error response format
+* Helmet security headers integration
+* Global and route-specific rate limiting
+* Joi validation with input sanitization
+* Standardized HTTP status code usage
+* Global 404 handling pipeline
 
 ### Sequelize Model Design
 
@@ -62,15 +67,24 @@ This project emphasizes **understanding architecture**, not just making things w
 * Allocation history tracking
 * Relational joins with eager loading
 * Input validation middleware
-* Business rule enforcement (availability checks)
+* Business rule enforcement
 * Atomic multi-table updates
+
+### Audit Logging System
+
+* Dedicated audit log model
+* Middleware-driven action tracking
+* Authentication event logging
+* Asset and allocation event logging
+* Admin-only audit viewing endpoint
 
 ### Middleware System
 
 * Authentication middleware
 * Role-based authorization middleware
-* Joi validation middleware pipeline
-* Allocation validation middleware
+* Validation middleware pipeline
+* Audit logging middleware
+* Rate limiting middleware
 * Centralized error middleware
 * Clean middleware ordering
 
@@ -86,8 +100,8 @@ This project emphasizes **understanding architecture**, not just making things w
 
 * Separation of concerns (routes → controllers → models)
 * Modular controller architecture
-* Simplified readable logic
-* Professional folder architecture
+* Professional folder organization
+* Readable and maintainable logic
 
 ---
 
@@ -129,28 +143,36 @@ src/
 ### Phase 2 — Asset CRUD System ✅
 
 * Asset model & associations
-* Create asset endpoint
-* Get all assets endpoint
-* Get asset by ID endpoint
-* Update asset endpoint
-* Delete asset endpoint
-* Admin-only create/delete enforcement
+* Full CRUD endpoints
+* Admin authorization rules
 * Joi input validation
-* Pagination support
-* Filtering (category/status)
-* Sorting options
+* Pagination, filtering & sorting
 
 ### Phase 3 — Allocation System ✅
 
 * Allocation model/schema
-* Transaction-safe assign asset endpoint
-* Prevent assigning unavailable assets
-* Return asset endpoint
-* Automatic asset status updates
+* Transaction-safe asset assignment
+* Asset lifecycle management
 * Allocation history tracking
-* Allocation listing endpoint with joins
-* Allocation input validation middleware
 * Concurrency-safe business logic
+
+### Phase 4 — Audit Logging System ✅
+
+* AuditLog model/schema
+* Middleware-driven audit logging
+* Authentication event tracking
+* Asset & allocation logging
+* Admin audit log endpoint
+
+### Phase 5 — Error Handling & Security ✅
+
+* Centralized global error handler
+* Custom error classes
+* Helmet security middleware
+* Global & route-specific rate limiting
+* Async error handling wrapper
+* Joi input sanitization
+* Standardized HTTP status codes
 
 ---
 
@@ -163,6 +185,8 @@ src/
 * bcrypt
 * JWT
 * Joi
+* Helmet
+* express-rate-limit
 * dotenv
 
 ---
@@ -174,19 +198,20 @@ This repository follows:
 * **Incremental learning**
 * **Architecture-first thinking**
 * **Security-conscious design**
+* **Production-style engineering practices**
 * **Readable, maintainable code**
 
-Each phase focuses on mastering one layer of backend engineering before moving forward.
+Each phase focuses on mastering one layer of backend engineering before advancing.
 
 ---
 
-## 🔜 Next Steps (Phase 4 Preview)
+## 🔜 Next Steps (Phase 6 Preview)
 
-* Advanced relational patterns
-* Automated testing with Jest
-* Service-layer architecture
-* Performance optimizations
-* Production-ready API patterns
+* Automated API testing with Jest & Supertest
+* Test database isolation
+* Integration test coverage for auth & assets
+* Service-layer architecture exploration
+* API documentation (OpenAPI/Swagger)
 
 ---
 
@@ -198,5 +223,5 @@ This repo is intentionally documented to track learning progress and reinforce b
 
 ## ⚡ Author
 
-SAIVARUN aka DPICODER
-Backend revision & experimentation lab focused on mastering Node.js architecture.
+**SAIVARUN (DPICODER)**
+Backend engineering revision lab focused on mastering Node.js architecture.
