@@ -11,6 +11,7 @@ const authRouter = require("./routes/authRoutes");
 const protect = require("./middlewares/authMiddleware");
 const testRouter = require("./routes/testRoutes");
 const assetRouter = require("./routes/assetRoutes");
+const adminRouter = require("./routes/adminRoutes");
 const app = express();
 const PORT = process.env.PORT;
 
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/test', testRouter);
 app.use('/api/asset',assetRouter);
-
+app.use('/api/admin',adminRouter);
 // async function that establishes test connection to the database (Mariadb)
 async function initailizeDB() {
   await sequelize.authenticate();

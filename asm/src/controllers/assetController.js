@@ -2,6 +2,7 @@ const { where, ValidationErrorItemType } = require("sequelize");
 const sequelize = require("../config/database");
 const { Asset, Allocation, User } = require("../models");
 const { lock, all } = require("../routes/assetRoutes");
+const logEvent = require("../services/audit.service");
 
 
 exports.createAsset = async (req, res, next) => {
@@ -19,6 +20,20 @@ exports.createAsset = async (req, res, next) => {
             purchaseCost,
             createdBy
         })
+
+        await logEvent({
+            userId:req.user.id,
+            action:'CREATE_ASSET',
+            entityType:'ASSET',
+            entityId:asset.id,
+            ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+            metadata:{
+                "assetName":asset.name,
+                "category":asset.category
+            }
+        })
+
+
         res.status(201).json({ success: true, message: "Asset created Successfully", asset })
 
     } catch (error) {
@@ -140,6 +155,18 @@ exports.updateAsset = async (req, res, next) => {
 
         await asset.update(updates)
 
+        await logEvent({
+            userId:req.user.id,
+            action:'UPDATE_ASSET',
+            entityType:'ASSET',
+            entityId:asset.id,
+            ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+            metadata:{
+                "assetName":asset.name,
+                "category":asset.category
+            }
+        })
+
         res.status(200).json({ success: true, message: "Asset updated successfully", data: asset })
 
     } catch (error) {
@@ -198,6 +225,19 @@ exports.assignAsset = async(req , res , next)=>{
 
         await t.commit();
 
+        await logEvent({
+            userId:req.user.id,
+            action:'ALLOCATE_ASSET',
+            entityType:'ASSET',
+            entityId:asset.id,
+            ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+            metadata:{
+                assetName:asset.name,
+                category:asset.category
+            }
+        })
+
+
         res.status(201).json(
         {
             success:true,
@@ -245,6 +285,20 @@ exports.returnAsset = async(req,res,next)=>{
 
 
         await t.commit();
+
+        await logEvent({
+            userId:req.user.id,
+            action:'RETURN_ASSET',
+            entityType:'ASSET',
+            entityId:asset.id,
+            ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+            metadata:{
+                "assetName":asset.name,
+                "category":asset.category
+            }
+
+        })
+
 
         res.status(200).json({
             success:true,
@@ -296,7 +350,17 @@ exports.deleteAsset = async (req, res, next) => {
         }
 
         await asset.destroy();
-
+        await logEvent({
+            userId:req.user.id,
+            action:'DELETE_ASSET',
+            entityType:'ASSET',
+            entityId:asset.id,
+            ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+            metadata:{
+                "assetName":asset.name,
+                "category":asset.category
+            }
+        })
         res.status(200).json({ success: true, message: "Asset Deleted Successfully", asset_id: id })
 
 

@@ -1,6 +1,9 @@
 const User = require("../models/User");
+const logEvent = require("../services/audit.service");
 const generateToken = require("../utils/generateToken");
 const bcrypt = require('bcrypt');
+
+
 exports.register = async (req, res, next) => {
   try {
     const { email, firstName, userName, lastName, password } = req.body;
@@ -46,6 +49,13 @@ exports.login = async (req, res, next) => {
       where: { userName },
     });
     if (!user) {
+      await logEvent({
+        userId:99999,
+        action:'LOGIN_FAILED',
+        entityType:'AUTH',
+        ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+        metadata:{"userName":userName}
+      })
       const error = new Error("Username not found");
       error.statusCode = 401;
       throw error;
@@ -62,6 +72,18 @@ exports.login = async (req, res, next) => {
     }
 
     const token = generateToken(user);
+
+    await logEvent({
+      userId:user.id,
+      action:'LOGIN_SUCCESS',
+      entityType:'AUTH',
+      ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+      metadata:{
+        "email":user.email,
+        "userAgent":req.headers['user-agent']
+      }
+    })
+
 
     res.status(200).json({
       token,

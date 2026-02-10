@@ -60,12 +60,12 @@
 
 ## Phase 4 — Audit Logging System
 
-* [ ] Create AuditLog model/schema
-* [ ] Build audit logging middleware/service
-* [ ] Log asset creation actions
-* [ ] Log allocation actions
-* [ ] Log user authentication events
-* [ ] Create endpoint to view audit logs (admin only)
+* [X] Create AuditLog model/schema
+* [X] Build audit logging middleware/service
+* [X] Log asset creation actions
+* [X] Log allocation actions
+* [X] Log user authentication events
+* [X] Create endpoint to view audit logs (admin only)
 
 ---
 
