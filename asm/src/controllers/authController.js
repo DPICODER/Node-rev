@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const logEvent = require("../services/audit.service");
+const AuthError = require("../utils/errors/AuthError");
+const NotFoundError = require("../utils/errors/NotFoundError");
 const generateToken = require("../utils/generateToken");
 const bcrypt = require('bcrypt');
 
@@ -14,9 +16,7 @@ exports.register = async (req, res, next) => {
     });
 
     if (userNameExists) {
-      const error = new Error("UserName already exists");
-      error.statusCode = 400;
-      throw error;
+      throw new AuthError("UserName already exists")
     }
 
     const user = await User.create({
@@ -56,9 +56,7 @@ exports.login = async (req, res, next) => {
         ip:req.headers['x-forwarded-for'] || req.socket.remoteAddress,
         metadata:{"userName":userName}
       })
-      const error = new Error("Username not found");
-      error.statusCode = 401;
-      throw error;
+      throw new AuthError("User not found");
     }
     const compare =await bcrypt.compare(password,user.password);
     console.log("Compare Status:",compare);
@@ -66,9 +64,7 @@ exports.login = async (req, res, next) => {
     const isMatch = await user.comparePassword(password);
     // console.log("is same :",comparePassword);
     if (!isMatch) {
-      const error = new Error("Incorrect Password");
-      error.statusCode = 401;
-      throw error;
+      throw new AuthError("Incorrect Password");
     }
 
     const token = generateToken(user);

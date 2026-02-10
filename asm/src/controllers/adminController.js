@@ -1,4 +1,5 @@
-const AuditLog = require("../models/auditLog.model")
+const AuditLog = require("../models/auditLog.model");
+const NotFoundError = require("../utils/errors/NotFoundError");
 
 exports.getLogs = async(req,res,next)=>{
     try {
@@ -9,9 +10,7 @@ exports.getLogs = async(req,res,next)=>{
         })
 
         if(auditLogs.length === 0){
-            const error = new Error('No logs found');
-            error.statusCode=404;
-            return next(error);
+            throw new NotFoundError('No logs found')
         }
         res.status(200).json({
             success:true,

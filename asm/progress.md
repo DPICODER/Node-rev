@@ -71,13 +71,13 @@
 
 ## Phase 5 — Error Handling & Security
 
-* [ ] Centralized error handler working globally
-* [ ] Custom error classes (optional)
-* [ ] Add Helmet security middleware
-* [ ] Add rate limiting middleware
-* [ ] Handle async errors properly
-* [ ] Sanitize inputs
-* [ ] Proper HTTP status codes everywhere
+* [X] Centralized error handler working globally
+* [X] Custom error classes (optional)
+* [X] Add Helmet security middleware
+* [X] Add rate limiting middleware
+* [X] Handle async errors properly
+* [X] Sanitize inputs
+* [X] Proper HTTP status codes everywhere
 
 ---
 

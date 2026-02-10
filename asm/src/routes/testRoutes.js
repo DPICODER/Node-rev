@@ -1,6 +1,7 @@
 const express = require('express');
 const protect = require('../middlewares/authMiddleware');
 const authorize = require('../middlewares/authorize');
+const asyncHandler = require('../utils/asyncHandler');
 const testRouter = express.Router();
 
 
@@ -43,6 +44,10 @@ testRouter.get('/admin-test',protect,authorize("admin"),(req,res)=>{
     res.json({message:"Welcome ADMIN"})
 })
 
+
+testRouter.get('/test-error',asyncHandler(async(req,res)=>{
+  throw new Error("Test Async Err")
+}))
 
 
 module.exports = testRouter;

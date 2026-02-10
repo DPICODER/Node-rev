@@ -1,32 +1,26 @@
-/**
- * Generic validation middleware
- *
- * Usage:
- * validate(schema)
- */
+const ValidationError = require("../utils/errors/ValidationError");
 
 const validate = (schema) => {
-    return (req, res, next) => {
-        const { error,value } = schema.validate(req.body, { abortEarly: false, stripUnknown: true });
+  return (req, res, next) => {
+    const { error, value } = schema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
 
-        if (error) {
+    if (error) {
+      const formattedErrors = {};
 
-            const formattedErrors = {};
+      error.details.forEach((err) => {
+        const key = err.path[0];
+        formattedErrors[key] = err.message.replace(/"/g, "");
+      });
 
-            error.details.forEach((err) => {
-                const key = err.path[0];
-                formattedErrors[key] = err.message.replace(/"/g, "");
-            });
+      return next(new ValidationError(formattedErrors));
+    }
 
-            return res.status(400).json({
-                message: "Validation Error",
-                errors: formattedErrors
-            });
-        }
-        req.body = value;// sanitized data
-        next();
-
-    };
-}
+    req.body = value;
+    next();
+  };
+};
 
 module.exports = validate;

@@ -1,8 +1,9 @@
 const { where, ValidationErrorItemType } = require("sequelize");
 const sequelize = require("../config/database");
 const { Asset, Allocation, User } = require("../models");
-const { lock, all } = require("../routes/assetRoutes");
 const logEvent = require("../services/audit.service");
+const AppError = require("../utils/AppError");
+const NotFoundError = require("../utils/errors/NotFoundError");
 
 
 exports.createAsset = async (req, res, next) => {
@@ -37,8 +38,6 @@ exports.createAsset = async (req, res, next) => {
         res.status(201).json({ success: true, message: "Asset created Successfully", asset })
 
     } catch (error) {
-        const err = new Error("Error creating asset!!");
-        err.statusCode = 500;
         return next(err);
     }
 };
@@ -115,9 +114,7 @@ exports.getAsset = async (req, res, next) => {
         const id = Number(req.params.id);
         const asset = await Asset.findOne({ where: { id, createdBy: req.user.id }, attributes: { exclude: ['deletedAt'] } });
         if (!asset) {
-            const error = new Error("Asset not found");
-            error.statusCode = 404;
-            return next(error);
+            throw new NotFoundError("Asset not found")
         }
         res.status(200).json({ success: true, message: "Asset fetched success", data: asset })
     } catch (error) {
@@ -131,9 +128,7 @@ exports.updateAsset = async (req, res, next) => {
 
         const asset = await Asset.findOne({ where: { id, createdBy: req.user.id }, attributes: { exclude: ['deletedAt'] } });
         if (!asset) {
-            const error = new Error('Asset not found');
-            error.statusCode = 404;
-            return next(error);
+            throw new NotFoundError('Asset not found')
         }
 
         const allowedFields = [
@@ -196,9 +191,7 @@ exports.assignAsset = async(req , res , next)=>{
 
         // fallback if no asset found
         if(!asset){
-            const error = new Error("Asset not found!!");
-            error.statusCode=404;//not found
-            throw error;
+            throw new NotFoundError("Asset not found");
         }
 
         if(asset.status !== "available"){
@@ -210,9 +203,7 @@ exports.assignAsset = async(req , res , next)=>{
         const user = await User.findOne({where:{id:userId},transaction:t});
         
         if(!user){
-            const error = new Error("User not found!!");
-            error.statusCode=404;//not found
-            throw error;
+            throw new NotFoundError("Asset not found");
         }
 
 
@@ -261,9 +252,7 @@ exports.returnAsset = async(req,res,next)=>{
         const asset = await Asset.findOne({where:{id},transaction:t,lock:t.LOCK.UPDATE});
 
         if(!asset){
-            const error = new Error("Asset not found");
-            error.statusCode = 404;
-            throw error;
+            throw new NotFoundError("Asset not found");
         }
 
         if(asset.status !== "allocated"){
@@ -275,9 +264,7 @@ exports.returnAsset = async(req,res,next)=>{
         const allocation = await Allocation.findOne({where:{assetId:id,status:'active'},transaction:t,lock:t.LOCK.UPDATE});
 
         if(!allocation){
-            const error = new Error("Allocation record not found!!");
-            error.statusCode=404;
-            throw error;
+            throw new NotFoundError("Asset not found");
         }
         await allocation.update({status:'returned',returnedAt: new Date()},{transaction:t});
 
@@ -344,9 +331,7 @@ exports.deleteAsset = async (req, res, next) => {
         const id = Number(req.params.id);
         const asset = await Asset.findOne({ where: { id, createdBy: req.user.id } });
         if (!asset) {
-            const error = new Error('Asset not found');
-            error.statusCode = 404;
-            return next(error);
+            throw new NotFoundError("Asset not found");
         }
 
         await asset.destroy();
