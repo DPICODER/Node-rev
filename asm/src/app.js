@@ -56,13 +56,8 @@ app.use(errorMiddleware);
 
 // starting a Node server for listening the REST API requrest
 // app listens at given port number if any error a message handles the error
-app.listen(PORT || 3000, (err) => {
-  if (err) {
-    //error handling message
-    console.error("Error starting server", err);
-  } else {
-    //server start message
-    console.log(`Server is up @ http://localhost:${PORT || 3000}`);
-    initailizeDB();
-  }
-});
+
+console.log("app is running");
+
+
+module.exports= {app,initailizeDB};

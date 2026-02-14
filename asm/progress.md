@@ -83,8 +83,8 @@
 
 ## Phase 6 — Testing
 
-* [ ] Setup Jest/Supertest
-* [ ] Write test for auth register/login
+* [X] Setup Jest/Supertest
+* [X] Write test for auth register/login
 * [ ] Write test for asset CRUD
 * [ ] Write test for allocation logic
 * [ ] Write test for role permissions

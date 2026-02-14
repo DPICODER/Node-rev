@@ -11,8 +11,11 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand"
+  },
+  "jest":{
+    "testEnvironment":"node"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -28,5 +31,9 @@
     "nodemon": "^3.1.11",
     "sequelize": "^6.37.7",
     "sql2": "^0.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2"
   }
 }
